@@ -18,7 +18,9 @@ db.once("open", () => console.log("Connected to Database"));
 app.use(express.json());
 app.use(cors(corsOptions));
 
-// const studentsRouter = require("./routes/students");
-// app.use("/students", studentsRouter);
+ const usersRouter = require("./routes/users");
+ const booksRouter = require("./routes/books");
+ app.use("/user", usersRouter);
+ app.use("/book", booksRouter);
 
 app.listen(3500, () => console.log("Server Started"));
