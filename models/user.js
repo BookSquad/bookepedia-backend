@@ -23,4 +23,8 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.methods.remove = async function () {
+  await this.model("User").deleteOne({ _id: this._id });
+};
+
 module.exports = mongoose.model("User", userSchema);
