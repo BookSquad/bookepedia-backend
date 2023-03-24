@@ -40,6 +40,7 @@ router.get("/listings", async (req, res) => {
   }
 });
 
+
 //update a user
 router.patch("/:email", getUserByEmail, async (req, res) => {
   if (req.body.fname != null) {
