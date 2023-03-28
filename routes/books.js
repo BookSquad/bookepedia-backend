@@ -108,6 +108,21 @@ router.get("/:isbn", async (req, res) => {
   
 });
 
+
+router.get("/details/:_id", async (req, res) => { 
+  console.log("made it ")
+  try {
+    const book = await Book.findOne({ _id: req.params._id });
+    book.views++
+    book.save()
+    res.json(book);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  } 
+  
+});
+
+
 router.get("/sort/:sort", async (req, res) => { 
   sortOrder = req.params.sort;
   console.log(sortOrder)
