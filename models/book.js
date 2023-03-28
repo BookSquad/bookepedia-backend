@@ -27,7 +27,10 @@ const bookSchema = new mongoose.Schema({
     type: String,
   },
   dateAdded: { type: Date, default: Date.now },
-  views: {type: Number, default: 0}
+  views: {type: Number, default: 0},
+  condition: {
+    type: String,
+  }
 });
 
 module.exports = mongoose.model("Book", bookSchema);

@@ -12,7 +12,7 @@ const upload = multer({ dest: './BookImagesUploaded/' })
 //Creating one book
 router.post("/upload/", upload.single('image'), async (req, res) => {
   console.log("Server made it")
-  let fileName = ''
+  let fileName = 'noImage.png' //default placeholder image
   if (req.file) {
     fileName = req.file.filename
   }
@@ -27,7 +27,8 @@ router.post("/upload/", upload.single('image'), async (req, res) => {
     price: req.body.price,
     description: req.body.description,
     sellerEmail: req.body.sellerEmail,
-    image: fileName 
+    image: fileName, 
+    condition: req.body.condition
 
   }); 
   console.log(book)  
@@ -67,9 +68,23 @@ router.post("/upload/", async (req, res) => {
 });
 */
 
+
+//Get all books
+router.get('/', async (req, res) =>{
+
+  try {
+    const books = await Book.find().sort({views: -1, dateAdded: -1})
+    res.json(books)    
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+
+})
+
+
 router.delete("/:isbn", getBookByIsbn, async (req, res) => {
   try {
-    await res.book.remove();
+    await res.book.deleteOne();
     console.log(res.book)
     res.json({ message: "Deleted Book" });
   } catch (err) {
@@ -78,8 +93,42 @@ router.delete("/:isbn", getBookByIsbn, async (req, res) => {
 });
   
 //finding user by email
-router.get("/:isbn", getBookByIsbn, (req, res) => {
+/*router.get("/:isbn", getBookByIsbn, (req, res) => {
   res.json(res.book);
+});*/
+
+
+router.get("/:isbn", async (req, res) => { 
+  try {
+    const books = await Book.find({ isbn: req.params.isbn }).sort({views: -1, dateAdded: -1});
+    res.json(books);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  } 
+  
+});
+
+router.get("/sort/:sort", async (req, res) => { 
+  sortOrder = req.params.sort;
+  console.log(sortOrder)
+  let books;
+  try {
+    if(sortOrder == 1){
+      console.log(sortOrder)
+       books = await Book.find().sort({views: -1, dateAdded: -1});
+    }else if (sortOrder == 2) {
+      console.log(sortOrder)
+       books = await Book.find().sort({price: -1});
+    } else if (sortOrder == 3){
+      console.log(sortOrder)
+       books = await Book.find().sort({price: 1});
+    }
+    
+    res.json(books);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  } 
+  
 });
 
 //generic function get user by email
