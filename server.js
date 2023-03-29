@@ -23,4 +23,6 @@ app.use(cors(corsOptions));
  app.use("/user", usersRouter);
  app.use("/book", booksRouter);
 
+ app.use('/BookImagesUploaded', express.static('BookImagesUploaded'))
+
 app.listen(3500, () => console.log("Server Started"));

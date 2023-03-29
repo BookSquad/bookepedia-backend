@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user.js");
 const Book = require("../models/book.js")
 
-//Creating one student
+//Creating one user
 router.post("/register/", async (req, res) => {
   const user = new User({
     fname: req.body.fname,
@@ -14,8 +14,19 @@ router.post("/register/", async (req, res) => {
   });
   console.log(user);
   try {
-    const newUser = await user.save();
-    res.status(201).json(newUser);
+
+    //let exists = 'ss'
+    let exists = await User.findOne({ email: user.email});
+    if (exists == null) {
+      const newUser = await user.save();
+      res.status(201).json({message:'success'});
+    }
+    else {
+      res.status(201).json({message:'exists'});
+    }
+
+
+    
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
