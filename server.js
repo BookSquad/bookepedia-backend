@@ -18,11 +18,13 @@ db.once("open", () => console.log("Connected to Database"));
 app.use(express.json());
 app.use(cors(corsOptions));
 
- const usersRouter = require("./routes/users");
- const booksRouter = require("./routes/books");
- app.use("/user", usersRouter);
- app.use("/book", booksRouter);
+const usersRouter = require("./routes/users");
+const booksRouter = require("./routes/books");
+const ordersRouter = require("./routes/orders");
+app.use("/user", usersRouter);
+app.use("/book", booksRouter);
+app.use("/orders", ordersRouter);
 
- app.use('/BookImagesUploaded', express.static('BookImagesUploaded'))
+app.use("/BookImagesUploaded", express.static("BookImagesUploaded"));
 
 app.listen(3500, () => console.log("Server Started"));
