@@ -28,4 +28,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Creating one order
+router.post("/add-order", async (req, res) => {
+  const order = new Order({
+    buyerEmail: req.body.buyerEmail,
+    sellerEmail: req.body.sellerEmail,
+    orderId: req.body.orderId,
+    isbn: req.body.isbn,
+    price: req.body.price,
+  });
+  console.log(order);
+  try {
+    const newOrder = await order.save();
+    res.status(201).json({ message: "success" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 module.exports = router;
