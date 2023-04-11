@@ -9,6 +9,7 @@ const orderSchema = new mongoose.Schema({
   quantity: { type: Number, default: 1 },
   orderDate: { type: Date, default: Date.now },
   status: { type: String, default: "Active" },
+  conditionVerification: {type: String, default: "No"}
 });
 
 module.exports = mongoose.model("Orders", orderSchema);

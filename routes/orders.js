@@ -53,6 +53,7 @@ router.post("/add-order", async (req, res) => {
     orderId: req.body.orderId,
     isbn: req.body.isbn,
     price: req.body.price,
+    conditionVerification : req.body.conditionVerification
   });
   console.log(order);
   try {
@@ -68,5 +69,22 @@ router.post("/add-order", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+//status update
+router.put("/statusUpdate/:id", async (req, res) => {
+  const { id } = req.params; console.log(id);
+  const status = req.body.status;
+  console.log(status);
+  try {
+    const order = await Order.findByIdAndUpdate(id, { $set: { status } });
+    console.log(order);
+    res.json(order);
+  } catch (error) {
+    
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
 
 module.exports = router;
